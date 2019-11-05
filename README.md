@@ -1,0 +1,2 @@
+# irdec
+IR detection competition
