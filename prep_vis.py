@@ -55,5 +55,24 @@ class CocoDetection_(dset.CocoDetection):
 
         return im, target
         
+class Test(dset.CocoDetection):
+    def __getitem__(self, index):
+        """
+        Args:
+            index (int): Index
+
+        Returns:
+            tuple: Tuple (image, target). target is the object returned by ``coco.loadAnns``.
+        """
+        coco = self.coco
+        img_id = self.ids[index]
+         
+        path = coco.loadImgs(img_id)[0]['name']
         
+        im = Image.open(os.path.join(self.root, path))
+        im = im.point(table, 'L')
+        im = im.convert('RGB')
+        if self.transforms is not None:
+            im, target = self.transforms(im, img_id)       
+        return im, img_id
         
