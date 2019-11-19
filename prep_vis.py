@@ -8,13 +8,22 @@ def to_xy(bbox):
              (bbox[2], bbox[3]), (bbox[0], bbox[3])]
     return coors
 
-def visualize_boxes(sample):
-    im = sample[0]
-    draw = ImageDraw.Draw(im)
-    for bb in sample[1]['boxes']:
-        draw.polygon(to_xy(bb), outline=(255, 0, 0))
-    del draw
-    return im
+def visualize_boxes(sample, max_box=10):
+  im = sample[0]
+  draw = ImageDraw.Draw(im)
+  k = 0
+  for bb in sample[1]['boxes']:
+    k += 1
+    draw.polygon(to_xy(bb), outline=(255, 0, 0))
+    if (sample[1]['labels'][k - 1].item() == 1):
+      label = 'Person'
+    else:
+      label = 'Car'
+    draw.text((bb[0], bb[1]), label, (0, 255, 0))
+    if (k == max_box):
+      break
+  del draw
+  return im
 
 table = [i/256 for i in range(65536)]
 
@@ -75,7 +84,3 @@ class Test(dset.CocoDetection):
         if self.transforms is not None:
             im, target = self.transforms(im, img_id)       
         return im, img_id
-    
-
-
-        
