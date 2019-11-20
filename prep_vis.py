@@ -2,6 +2,7 @@ from PIL import Image, ImageDraw
 import os
 import torchvision.datasets as dset
 from torch import FloatTensor, LongTensor, ByteTensor
+from torchvision.transforms import ToPILImage
 
 def to_xy(bbox):
     coors = [(bbox[0], bbox[1]), (bbox[2], bbox[1]),
@@ -9,7 +10,7 @@ def to_xy(bbox):
     return coors
 
 def visualize_boxes(sample, max_box=10):
-    im = sample[0]
+    im = ToPILImage()(sample[0])
     draw = ImageDraw.Draw(im)
     k = 0
     for bb in sample[1]['boxes']:
