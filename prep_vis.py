@@ -21,6 +21,8 @@ def visualize_boxes(sample, max_box=10):
         else:
             label = 'Car'
         draw.text((bb[0], bb[1]), label, (0, 255, 0))
+        if 'score' in sample[1].keys():
+            draw.text((bb[0] + bb[2], bb[1] + bb[3]), 'score:' + str(sample[1]['score'][k - 1]), (0, 255, 0))
         if (k == max_box):
             break
     del draw
